@@ -1,0 +1,23 @@
+{
+  "name": "line-webhook-app",
+  "version": "1.0.0",
+  "description": "A webhook application for LINE Messaging API that receives data from MQTT.",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@line/bot-sdk": "^7.7.0",
+    "@types/express": "^5.0.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mqtt": "^4.3.8"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^4.9.5"
+  },
+  "author": "",
+  "license": "ISC"
+}
