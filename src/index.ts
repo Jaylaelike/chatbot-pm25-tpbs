@@ -12,9 +12,22 @@ const lineConfig = {
 
 const client = new line.Client(lineConfig);
 
+const getHappinessIcon = (pm25Level: number) => {
+  if (pm25Level <= 12)
+    return "https://res.cloudinary.com/satjay/image/upload/v1738324665/face-pm25/jijtdxqdaw9i4c0fn82m.png";
+  if (pm25Level <= 35.4)
+    return "https://res.cloudinary.com/satjay/image/upload/v1738324666/face-pm25/myz0sukbdlvso20mabuj.png";
+  if (pm25Level <= 55.4)
+    return "https://res.cloudinary.com/satjay/image/upload/v1738324666/face-pm25/cf8uoxwsnggo9gflc8rv.png";
+  if (pm25Level <= 150.4)
+    return "https://res.cloudinary.com/satjay/image/upload/v1738324666/face-pm25/fdfitpv7adhtwqlmkx6g.png";
+  return "https://res.cloudinary.com/satjay/image/upload/v1738324667/face-pm25/dwjeydey3lvt8gvwdqkd.png";
+};
+
 // Create Flex Message with sensor data
 function createFlexMessage(data) {
   const now = new Date().toLocaleString();
+  const heroImageUrl = getHappinessIcon(data.pm2_5);
   return {
     type: "flex",
     altText: "Air Quality Report",
@@ -22,7 +35,7 @@ function createFlexMessage(data) {
       type: "bubble",
       hero: {
         type: "image",
-        url: "https://res.cloudinary.com/satjay/image/upload/v1738324666/face-pm25/fdfitpv7adhtwqlmkx6g.png",
+        url: heroImageUrl,
         size: "full",
         aspectRatio: "20:13",
         aspectMode: "cover",
