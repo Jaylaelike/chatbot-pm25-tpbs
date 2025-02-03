@@ -1,6 +1,7 @@
 const express = require("express");
 const line = require("@line/bot-sdk");
 const mqtt = require("mqtt");
+const axios = require("axios"); // Added for API calls
 const app = express();
 
 // LINE channel configuration
@@ -23,6 +24,36 @@ const getHappinessIcon = (pm25Level: number) => {
     return "https://res.cloudinary.com/satjay/image/upload/v1738324666/face-pm25/fdfitpv7adhtwqlmkx6g.png";
   return "https://res.cloudinary.com/satjay/image/upload/v1738324667/face-pm25/dwjeydey3lvt8gvwdqkd.png";
 };
+
+
+// Assistant context configuration
+const assistantContext = {
+  system: "หนูชื่อ ฝุ่นนี่ (Foony) ผู้ช่วยพูดคุยได้ทุกเรื่องค่ะ",
+  options: {
+    temperature: 0.7,
+    top_p: 0.9,
+    top_k: 40,
+    presence_penalty: 0.6,
+    frequency_penalty: 0.3
+  }
+};
+
+// Function to get AI response from Ollama
+async function getAIResponse(userMessage: string) {
+  try {
+    const response = await axios.post("http://localhost:11434/api/generate", {
+      model: "llama3.2",
+      prompt: userMessage,
+      stream: false,
+      system: assistantContext.system,
+      options: assistantContext.options,
+    });
+    return response.data.response;
+  } catch (error) {
+    console.error("Error getting AI response:", error);
+    return "ขออภัยค่ะ ตอนนี้ระบบมีปัญหา ไม่สามารถตอบกลับได้";
+  }
+}
 
 // Create Flex Message with sensor data
 function createFlexMessage(data) {
@@ -200,9 +231,11 @@ async function handleEvent(event) {
           });
         }
       } else {
+        // Get AI response for other messages
+        const aiResponse = await getAIResponse(event.message.text);
         await client.pushMessage(userId, {
           type: "text",
-          text: "ขอโทษค่ะ หนูไม่เข้าใจคำสั่งนี้ กรุณาพิมพ์ 'ค่าฝุ่นเป็นตอนนี้' เพื่อดูรายงานค่าฝุ่น",
+          text: aiResponse,
         });
       }
       break;
