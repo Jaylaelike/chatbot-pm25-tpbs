@@ -6,8 +6,8 @@ const app = express();
 // LINE channel configuration
 const lineConfig = {
   channelAccessToken:
-    "FcXxzf11t/3W8rDZkeP83c/Ul0llpAcLG/0zMLzp1b5MFdsvLXq0fo18UN6TfiKdIX+Qd1SgLL6eNZ4ZoiXr5r6FMlZkiYv7j9E56XwJJ4J7/SUaXVTyS7FxXwKx4dPhJyVQY4SsM2tK5i+8F9k3xQdB04t89/1O/w1cDnyilFU=",
-  channelSecret: "8095082a08f2161bd9e28fec24d73b9f",
+    "xxx",
+  channelSecret: "xxx",
 };
 
 const client = new line.Client(lineConfig);
